@@ -6,7 +6,7 @@ import App from './App'
 
 //页面配置
 import Home from './components/Home'
-import Menu from './components/Menu'
+// import Menu from './components/Menu'
 import Admin from './components/Admin'
 import About from './components/about/About'
 import Login from './components/Login'
@@ -19,19 +19,20 @@ import History from './components/about/History'
 import OrderingGuide from './components/about/OrderingGuide'
 
 //三级路由
-import PersonName from './components/about/contact/PersonName'
-import Phone from './components/about/contact/Phone'
+// import PersonName from './components/about/contact/PersonName'
+// import Phone from './components/about/contact/Phone'
+
 Vue.config.productionTip = false
 Vue.use(VueRouter)
-/* 路由配置 */
+/* 路由配置 和懒加载 */
 const routes = [
   { path: '/', name: "homeLink", component: Home },
-  { path: '/menu', name: "menuLink", component: Menu },
+  { path: '/menu', name: "menuLink", component: resolve => require(['./components/Menu'],resolve)},
   { path: '/admin', name: "adminLink", component: Admin },
   { path: '/about', name: "aboutLink",redirect:'/about/contact', component: About ,children:[
     {path:'/about/contact',name:'contactLink',redirect:'/personMame',component:Contact,children:[
-      {path:'/phone',name:'phone',component:Phone},
-      {path:'/personMame',name:'personName',component:PersonName}
+      {path:'/phone',name:'phone',component: resolve => require(['./components/about/contact/Phone'], resolve)}, 
+      {path:'/personMame',name:'personName',component:resolve => require(['./components/about/contact/PersonName'], resolve)}
     ]},
     {path:'/dellvery',name:'deliveryLink',component:Dellvery},
     {path:'/history',name:'historyLink',component:History},
